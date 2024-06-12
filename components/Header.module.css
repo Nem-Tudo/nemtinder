@@ -1,0 +1,77 @@
+.header {
+    display: flex;
+    flex-direction: row;
+    padding: 7px;
+    border-bottom: 1px solid var(--theme-color);
+    height: 70px;
+}
+
+.header .left {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+}
+
+.header .left a {
+    display: flex;
+    align-items: center;
+}
+
+.header .right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+}
+
+.header .logo {
+    width: 50px;
+    margin-right: 7px;
+}
+
+.header .user {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+}
+
+.header .user span {
+    margin-right: 10px;
+}
+
+.header .user .avatardiv {
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header .user .avatardiv img {
+    max-width: 100%;
+}
+
+.header .icon {
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.header .login {
+    margin: 7px;
+}
+
+.header .item {
+    margin-left: 15px;
+    font-size: 1rem;
+}
+
+.header .premium span {
+    background: -webkit-linear-gradient(315deg, #f00, #ff9101);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.header .item:hover{
+    text-decoration: underline;
+}

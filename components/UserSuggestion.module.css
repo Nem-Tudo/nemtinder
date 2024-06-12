@@ -1,0 +1,153 @@
+.userSuggestion {
+    margin: 50px;
+    display: flex;
+}
+
+.userprincipal {
+    border-radius: 5px;
+}
+
+.userprincipal .userphoto {
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border-radius: 8px;
+    max-width: 1200px;
+    max-height: 60vh;
+}
+
+.userprincipal .userphoto img {
+    width: 100%;
+}
+
+.userprincipal .userinfosdiv {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    color: white;
+    -webkit-box-shadow: inset -2px -86px 46px -35px rgba(0, 0, 0, 0.52);
+    -moz-box-shadow: inset -2px -86px 46px -35px rgba(0, 0, 0, 0.52);
+    box-shadow: inset -2px -86px 46px -35px rgba(0, 0, 0, 0.52);
+    height: 100%;
+    width: 100%;
+}
+
+.userprincipal .userinfos {
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 20px;
+    margin-left: 20px;
+}
+
+.userprincipal .userinfos div {
+    display: flex;
+    align-items: flex-end;
+}
+
+.userprincipal .userinfos div p {
+    font-size: 1.1rem;
+    margin-top: 7px;
+}
+
+.userprincipal .userinfos div h2 {
+    font-size: 2rem;
+    margin-right: 8px;
+}
+
+.userprincipal .userinfos div span {
+    border: 1px solid white;
+    padding: 3px;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.useroptions {
+    display: flex;
+    border: 2px solid var(--theme-color);
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 10px;
+    font-size: 2rem;
+    justify-content: space-between
+}
+
+.useroptions .option {
+    cursor: pointer;
+}
+
+.right {
+    border: 2px solid var(--theme-color);
+    border-radius: 10px;
+    margin-left: 20px;
+    padding: 10px;
+}
+
+.right .gender {
+    margin-left: auto;
+    margin-right: 5px;
+}
+
+.right h2{
+    margin-right: 5px;
+}
+
+.right .head {
+    border-bottom: 1px solid var(--theme-color);
+    display: flex;
+    align-items: center;
+    padding-bottom: 10px;
+}
+
+.right .avatardiv {
+    width: 50px;
+    max-height: 50px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100%;
+    margin-right: 7px;
+}
+
+.right .avatardiv img {
+    width: 100%;
+}
+
+.right .aboutuser {
+    margin-top: 25px;
+}
+
+.right .aboutuser h3 {
+    font-weight: 500;
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+}
+
+.right .aboutuser p {
+    margin-bottom: 35px;
+    white-space: pre-line;
+}
+
+@media (max-width: 750px) {
+    .userSuggestion {
+        flex-direction: column;
+        margin: 0px;
+        margin-top: 7px;
+    }
+
+    .userSuggestion .right {
+        margin-left: 0;
+        border: none;
+        padding: 20px;
+    }
+
+    .userSuggestion .useroptions {
+        border: none;
+    }
+
+    .userprincipal .userphoto {
+        border-radius: 0;
+    }
+}

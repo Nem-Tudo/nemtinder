@@ -1,0 +1,142 @@
+.main {
+    display: flex;
+}
+
+.content {
+    width: 100%;
+}
+
+.channelTitle {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 50px;
+}
+
+.channelTitle .avatardiv {
+    border-radius: 50%;
+    overflow: hidden;
+    width: 150px;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.channelTitle .avatardiv img {
+    width: 100%;
+}
+
+.channelTitle h2 {
+    font-size: 2rem;
+}
+
+.channelContent {
+    max-height: calc(100vh - 70px);
+    overflow: scroll;
+    padding-bottom: 35px;
+}
+
+.channelMessages .message .avatardiv {
+    border-radius: 50%;
+    overflow: hidden;
+    width: 50px;
+    min-width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-box-shadow: 10px 5px 24px -8px rgba(0, 0, 0, 0.37);
+    -moz-box-shadow: 10px 5px 24px -8px rgba(0, 0, 0, 0.37);
+    box-shadow: 10px 5px 24px -8px rgba(0, 0, 0, 0.37);
+}
+
+.channelMessages .message .avatardiv img {
+    width: 100%;
+}
+
+.channelMessages .message {
+    margin: 10px;
+}
+
+.channelMessages .message p {
+    max-width: 500px;
+    line-break: anywhere;
+    margin-top: 15px;
+}
+
+.channelMessages .message .message_content {
+    display: flex;
+    align-items: center;
+    color: rgb(255, 255, 255);
+    width: fit-content;
+    padding: 10px;
+    border-radius: 10px;
+    align-items: start;
+}
+
+.message_text_div {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.channelMessages .message_left .message_content {
+    background: linear-gradient(268deg, var(--theme-color), #FF8643);
+}
+
+.channelMessages .message_left p {
+    margin-left: 10px;
+}
+
+.channelMessages .message_right .message_content {
+    flex-direction: row-reverse;
+    margin-left: auto;
+    background: linear-gradient(268deg, var(--theme-color), #c5247d);
+}
+
+.channelMessages .message_right p {
+    margin-right: 10px;
+}
+
+.channelinput {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+
+}
+
+.channelinput_sendmessage {
+    border: 1px solid var(--theme-color);
+    margin: 10px;
+    background-color: white;
+    display: flex;
+    border-radius: 5px;
+}
+
+.channelinput input {
+    background-color: transparent;
+    padding: 15px;
+    border: none;
+    outline: none;
+    color: black;
+    width: 100%;
+}
+
+.channelinput_sendmessage button {
+    background-color: transparent;
+    color: var(--theme-color);
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+@media (min-width: 1200px) {
+    .channelinput {
+        width: calc(100% - 303px)
+    }
+}

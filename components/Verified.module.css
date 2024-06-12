@@ -1,0 +1,6 @@
+.verified{
+    display: inline-flex;
+    cursor: pointer;
+    color: rgb(0, 132, 255);
+    font-size: 2rem;
+}
