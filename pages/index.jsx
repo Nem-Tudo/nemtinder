@@ -64,7 +64,9 @@ export default function Home({ loggedUser: _loggedUser, apiError }) {
 
   const router = useRouter()
   const cookies = new CookieManager()
+
   let notificationSound = null;
+  let matchSound = null;
 
   useEffect(() => {
     getFeed();
@@ -90,6 +92,7 @@ export default function Home({ loggedUser: _loggedUser, apiError }) {
 
   function loadSockets(socket) {
     notificationSound = new Audio("/assets/notification.mp3");
+    matchSound = new Audio("/assets/match.mp3");
 
     window.socket = socket;
     socket.on("successfully_connected", data => {
@@ -97,6 +100,7 @@ export default function Home({ loggedUser: _loggedUser, apiError }) {
       setSocketId(socket.id)
     })
     socket.on("matchesUpdate", data => {
+      // matchSound.play()
       console.log("matchesUpdate", data)
       updateStateObject(setLoggedUser, loggedUser, ["matches", data])
     })
@@ -186,7 +190,12 @@ export default function Home({ loggedUser: _loggedUser, apiError }) {
               const nextItem = showingFeedItem + 1;
               if (nextItem >= feed.length) return alert("Acabou os usuários :(\nChame mais amigos para termos mais gente!")
               setShowingFeedItem(nextItem)
-            }} matchFunction={() => matchUser(feed[showingFeedItem].id, "SEND")} user={feed[showingFeedItem]} /> : "Carregando feed..."
+            }} matchFunction={() => {
+              matchUser(feed[showingFeedItem].id, "SEND")
+              const nextItem = showingFeedItem + 1;
+              if (nextItem >= feed.length) return alert("Acabou os usuários :(\nChame mais amigos para termos mais gente!")
+              setShowingFeedItem(nextItem)
+            }} user={feed[showingFeedItem]} /> : "Carregando feed..."
           }
         </section>
       </main>
