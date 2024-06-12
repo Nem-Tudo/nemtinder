@@ -291,7 +291,7 @@ export default function Profile({ loggedUser: loggedUser_, apiError }) {
                             </div>
                         </div>
                         <span>Redes Sociais</span>
-                        <textarea type="text" placeholder="Redes sociais" defaultValue={user.socialsDescriptions} onChange={(e) => updateStateObject(setUser, user, ["socialsDescription", e.target.value])} />
+                        <textarea type="text" placeholder="Redes sociais" defaultValue={user.socialsDescription} onChange={(e) => updateStateObject(setUser, user, ["socialsDescription", e.target.value])} />
                         <span>Foto em destaque</span>
                         <div className={styles.imageinput}>
                             <input id="userphoto" type="file" accept=".png,.jpeg,.jpg" name="Foto em destaque" onChange={async e => {
