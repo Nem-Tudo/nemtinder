@@ -53,11 +53,12 @@ export async function getServerSideProps({ query, req, res }) {
 
 }
 
-export default function Profile({ loggedUser, apiError }) {
+export default function Profile({ loggedUser: loggedUser_, apiError }) {
 
-    const [user, setUser] = useState(loggedUser);
+    const [user, setUser] = useState(loggedUser_);
     const [uploadFiles, setUploadFiles] = useState({});
     const [socketId, setSocketId] = useState(null)
+    const [loggedUser, setLoggedUser] = useState(loggedUser_)
 
     if (apiError) return <APIError />
 
@@ -66,6 +67,7 @@ export default function Profile({ loggedUser, apiError }) {
     const cookies = new CookieManager()
 
     let notificationSound = null
+    let matchSound = null
     useEffect(() => {
         window.socket?.disconnect()
         const socket = io(settings.apiURL, {
@@ -174,6 +176,7 @@ export default function Profile({ loggedUser, apiError }) {
 
     function loadSockets(socket) {
         notificationSound = new Audio("/assets/notification.mp3");
+        matchSound = new Audio("/assets/match.mp3");
 
         window.socket = socket;
         socket.on("successfully_connected", data => {
@@ -181,6 +184,7 @@ export default function Profile({ loggedUser, apiError }) {
             setSocketId(socket.id)
         })
         socket.on("matchesUpdate", data => {
+            // matchSound.play()
             console.log("matchesUpdate", data)
             updateStateObject(setLoggedUser, loggedUser, ["matches", data])
         })
