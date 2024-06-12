@@ -215,7 +215,11 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
                     </div>
                     <div className={styles.channelinput}>
                         <div className={styles.channelinput_sendmessage}>
-                            <input value={typingMessage.content} onChange={(e) => updateStateObject(setTypingMessage, typingMessage, ["content", e.target.value])} type="text" placeholder={`Conversar com ${user.name}`} />
+                            <input onKeyDown={(e) => {
+                                if (e.keyCode == 13) {
+                                    sendMessage()
+                                }
+                            }} value={typingMessage.content} onChange={(e) => updateStateObject(setTypingMessage, typingMessage, ["content", e.target.value])} type="text" placeholder={`Conversar com ${user.name}`} />
                             <button onClick={() => sendMessage()}><IoSend /></button>
                         </div>
                     </div>
