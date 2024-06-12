@@ -90,7 +90,7 @@ export default function Login({ apiError }) {
             console.log(e)
             recaptcha1Ref.current.reset()
             setRecaptcha1Value(null)
-            alert(`Erro: ${e.response?.data?.message}`)
+            return alert(`Erro ao logar: ${response?.errors ? response.errors.map(e => `${e.path}: ${e.message}`).join("\n") : response?.message}`)
         }
 
     }
@@ -132,7 +132,7 @@ export default function Login({ apiError }) {
             console.log(e)
             recaptcha2Ref.current.reset()
             setRecaptcha2Value(null)
-            alert(`Erro: ${e.response?.data?.message}`)
+            return alert(`Erro ao criar conta: ${response?.errors ? response.errors.map(e => `${e.path}: ${e.message}`).join("\n") : response?.message}`)
         }
 
     }
@@ -170,7 +170,7 @@ export default function Login({ apiError }) {
 
                 <div className={styles.inputs}>
                     <h1>Criar uma conta?</h1>
-                    <input id="register_username" type="text" placeholder="username" />
+                    <input id="register_username" type="text" placeholder="username" onChange={e => e.target.value = e.target.value.toLowerCase()} />
                     <input id="register_name" type="text" placeholder="Seu nome" />
                     <input id="register_password" type="password" placeholder="senha" />
                     <div className={styles.captcha}>
