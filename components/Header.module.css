@@ -72,6 +72,12 @@
     -webkit-text-fill-color: transparent;
 }
 
-.header .item:hover{
+.header .item:hover {
     text-decoration: underline;
+}
+
+@media (max-width: 750px) {
+    .header .left img {
+        display: none;
+    }
 }
