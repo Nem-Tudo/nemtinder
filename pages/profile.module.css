@@ -54,6 +54,12 @@
     border: none;
     border-radius: 5px;
     margin: 5px;
+    cursor: pointer;
+}
+
+.inputs button:disabled{
+    opacity: 0.5;
+    cursor: not-allowed
 }
 
 @media (max-width: 1200px) {

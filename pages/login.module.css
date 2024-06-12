@@ -55,6 +55,12 @@
     border-radius: 7px;
     border: none;
     margin-top: 20px;
+    cursor: pointer;
+}
+
+.inputs button:disabled{
+    opacity: 0.5;
+    cursor: not-allowed
 }
 
 .captcha{

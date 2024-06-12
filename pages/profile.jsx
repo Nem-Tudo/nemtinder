@@ -296,7 +296,7 @@ export default function Profile({ loggedUser, apiError }) {
                             </label>
                             <span>Foto</span>
                         </div>
-                        <button onClick={() => saveChanges()}>Salvar</button>
+                        <button disabled={!(user.username && user.name && user.age && user.gender && user.shortDescription && user.likesDescription && user.avatar && user.longDescription && user.preferredGenders && user.socialsDescription && user.photos[0])} onClick={() => saveChanges()}>Salvar</button>
                     </div>
 
                     <UserSuggestion user={user} closeFunction={() => alert("Botão ilustrativo")} matchFunction={() => alert("Botão ilustrativo")} />
