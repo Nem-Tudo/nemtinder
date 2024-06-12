@@ -108,6 +108,12 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
     let notificationSound = null;
 
     useEffect(() => {
+        window.onfocus = function () {
+            focused = true;
+        };
+        window.onblur = function () {
+            focused = false;
+        };
         window.socket?.disconnect()
         const socket = io(settings.apiURL, {
             query: `authorization=${cookies.getCookie("authorization")}`
@@ -117,13 +123,6 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
     }, [])
 
     let focused = true;
-
-    window.onfocus = function () {
-        focused = true;
-    };
-    window.onblur = function () {
-        focused = false;
-    };
 
 
 
