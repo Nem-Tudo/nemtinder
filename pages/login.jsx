@@ -147,30 +147,39 @@ export default function Login({ apiError }) {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <Header data={{ user: null }} />
+            <div className={styles.branding}>
+                <img src="/logo.png" />
+                <h1>NemTinder</h1>
+            </div>
             <main className={styles.main}>
 
                 <div className={styles.inputs}>
                     <h1>Já tem uma conta?</h1>
                     <input id="login_username" type="text" placeholder="username" />
                     <input id="login_password" type="password" placeholder="senha" />
-                    <ReCAPTCHA
-                        sitekey={settings.captchaKey}
-                        ref={recaptcha1Ref}
-                        onChange={setRecaptcha1Value}
-                    />
+                    <div className={styles.captcha}>
+
+                        <ReCAPTCHA
+                            sitekey={settings.captchaKey}
+                            ref={recaptcha1Ref}
+                            onChange={setRecaptcha1Value}
+                        />
+                    </div>
                     <button onClick={() => login()} disabled={!recaptcha1Value}>Logar</button>
                 </div>
 
                 <div className={styles.inputs}>
                     <h1>Criar uma conta?</h1>
                     <input id="register_username" type="text" placeholder="username" />
-                    <input id="register_name" type="text" placeholder="nome" />
+                    <input id="register_name" type="text" placeholder="Seu nome" />
                     <input id="register_password" type="password" placeholder="senha" />
-                    <ReCAPTCHA
-                        sitekey={settings.captchaKey}
-                        ref={recaptcha2Ref}
-                        onChange={setRecaptcha2Value}
-                    />
+                    <div className={styles.captcha}>
+                        <ReCAPTCHA
+                            sitekey={settings.captchaKey}
+                            ref={recaptcha2Ref}
+                            onChange={setRecaptcha2Value}
+                        />
+                    </div>
                     <button disabled={!recaptcha2Value} onClick={() => register()}>Registrar</button>
                 </div>
 

@@ -300,6 +300,10 @@ export default function Profile({ loggedUser, apiError }) {
                     </div>
 
                     <UserSuggestion user={user} closeFunction={() => alert("Botão ilustrativo")} matchFunction={() => alert("Botão ilustrativo")} />
+                    <button onClick={() => {
+                        cookies.eraseCookie("authorization")
+                        location.href = "/login"
+                    }}>Sair da conta</button>
                 </section>
             </main>
         </>
