@@ -103,7 +103,7 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
     // const [unreadUsers, setUnreadUsers] = useState(unreadUsersMessages.getAll())
 
     if (apiError) return <APIError />
-    
+
 
     let notificationSound = null;
 
@@ -116,6 +116,14 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
         notificationSound = new Audio("/assets/notification.mp3");
     }, [])
 
+    let focused = true;
+
+    window.onfocus = function () {
+        focused = true;
+    };
+    window.onblur = function () {
+        focused = false;
+    };
 
 
 
@@ -134,6 +142,7 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
             if (channel.id === message.channelId) {
                 channel.messages.push(message);
                 updateStateObject(setChannel, channel, ["messages", channel.messages]);
+                if (!focused) notificationSound.play()
             } else {
                 notificationSound.play()
                 // setUnreadUsers(unreadUsersMessages.add(message.authorId))
