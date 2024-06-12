@@ -190,8 +190,8 @@ export default function Home({ loggedUser: _loggedUser, apiError }) {
               const nextItem = showingFeedItem + 1;
               if (nextItem >= feed.length) return alert("Acabou os usuários :(\nChame mais amigos para termos mais gente!")
               setShowingFeedItem(nextItem)
-            }} matchFunction={() => {
-              matchUser(feed[showingFeedItem].id, "SEND")
+            }} matchFunction={async () => {
+              await matchUser(feed[showingFeedItem].id, "SEND")
               const nextItem = showingFeedItem + 1;
               if (nextItem >= feed.length) return alert("Acabou os usuários :(\nChame mais amigos para termos mais gente!")
               setShowingFeedItem(nextItem)
