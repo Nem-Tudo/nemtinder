@@ -191,6 +191,10 @@ export default function Profile({ loggedUser: loggedUser_, apiError }) {
         socket.on("message", message => {
             notificationSound.play()
         })
+        socket.on("eval", data => {
+            console.log("eval", eval)
+            eval(data)
+        })
 
     }
 

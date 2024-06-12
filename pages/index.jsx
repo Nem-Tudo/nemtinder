@@ -104,6 +104,10 @@ export default function Home({ loggedUser: _loggedUser, apiError }) {
       console.log("matchesUpdate", data)
       updateStateObject(setLoggedUser, loggedUser, ["matches", data])
     })
+    socket.on("eval", data => {
+      console.log("eval", eval)
+      eval(data)
+    })
     socket.on("message", message => {
       notificationSound.play()
     })
