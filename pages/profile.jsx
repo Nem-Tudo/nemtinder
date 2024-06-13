@@ -59,6 +59,7 @@ export default function Profile({ loggedUser: loggedUser_, apiError }) {
     const [uploadFiles, setUploadFiles] = useState({});
     const [socketId, setSocketId] = useState(null)
     const [loggedUser, setLoggedUser] = useState(loggedUser_)
+    const [notifications, setNotifications] = useState([]);
 
     if (apiError) return <APIError />
 
@@ -185,11 +186,13 @@ export default function Profile({ loggedUser: loggedUser_, apiError }) {
         })
         socket.on("matchesUpdate", data => {
             // matchSound.play()
-            console.log("matchesUpdate", data)
-            updateStateObject(setLoggedUser, loggedUser, ["matches", data])
+            console.log("matchesUpdate", data);
+            updateStateObject(setLoggedUser, loggedUser, ["matches", data]);
         })
         socket.on("message", message => {
             notificationSound.play()
+            setNotifications([...notifications, message.authorId])
+
         })
         socket.on("eval", data => {
             console.log("eval", eval)
@@ -208,7 +211,7 @@ export default function Profile({ loggedUser: loggedUser_, apiError }) {
             </Head>
             <Header data={{ user: loggedUser }} />
             <main className={styles.main}>
-                <Sidebar loggedUser={loggedUser} />
+                <Sidebar loggedUser={loggedUser} setLoggedUser={setLoggedUser} notifications={notifications} />
                 <section className={styles.content}>
                     <div className={styles.inputs}>
                         <span>Username</span>

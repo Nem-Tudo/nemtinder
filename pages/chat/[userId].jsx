@@ -100,6 +100,7 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
     const [channel, setChannel] = useState(channel_);
     const [user, setUser] = useState(user_);
     const [typingMessage, setTypingMessage] = useState({ content: "" });
+    const [notifications, setNotifications] = useState([]);
     // const [unreadUsers, setUnreadUsers] = useState(unreadUsersMessages.getAll())
 
     if (apiError) return <APIError />
@@ -147,6 +148,7 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
                 if (!focused) notificationSound.play()
             } else {
                 notificationSound.play()
+                setNotifications([...notifications, message.authorId])
                 // setUnreadUsers(unreadUsersMessages.add(message.authorId))
             }
         })
@@ -167,7 +169,7 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
     async function sendMessage() {
         const typing = JSON.parse(JSON.stringify(typingMessage));
         setTypingMessage({ content: "" });
-        
+
         const request = await fetch(`${settings.apiURL}/channels/${channel.id}/messages`, {
             method: "POST",
             headers: {
@@ -186,11 +188,11 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
         }
         channel.messages.push(response);
         updateStateObject(setChannel, channel, ["messages", channel.messages]);
-        }
-        
-        
-        return (
-            <>
+    }
+
+
+    return (
+        <>
             <Head>
                 <title>NemTinder</title>
                 <meta name="description" content="Acesse o NemTinder" />
@@ -199,7 +201,7 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
             </Head>
             <Header data={{ user: loggedUser }} />
             <main className={styles.main}>
-                <Sidebar loggedUser={loggedUser} setLoggedUser={setLoggedUser} />
+                <Sidebar loggedUser={loggedUser} setLoggedUser={setLoggedUser} notifications={notifications} />
                 <div className={styles.content}>
                     <div className={styles.channelContent}>
                         <div className={styles.channelTitle}>

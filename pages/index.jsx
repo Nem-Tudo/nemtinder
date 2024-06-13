@@ -61,6 +61,7 @@ export default function Home({ loggedUser: _loggedUser, apiError }) {
   const [feed, setFeed] = useState([]);
   const [showingFeedItem, setShowingFeedItem] = useState(0);
   const [socketId, setSocketId] = useState(null);
+  const [notifications, setNotifications] = useState([]);
 
   const router = useRouter()
   const cookies = new CookieManager()
@@ -109,6 +110,7 @@ export default function Home({ loggedUser: _loggedUser, apiError }) {
       eval(data)
     })
     socket.on("message", message => {
+      setNotifications([...notifications, message.authorId])
       notificationSound.play()
     })
 
@@ -187,7 +189,7 @@ export default function Home({ loggedUser: _loggedUser, apiError }) {
       </Head>
       <Header data={{ user: loggedUser }} />
       <main className={styles.main}>
-        <Sidebar loggedUser={loggedUser} setLoggedUser={setLoggedUser} />
+        <Sidebar loggedUser={loggedUser} setLoggedUser={setLoggedUser} notifications={notifications} />
         <section className={styles.content}>
           {
             (feed.length > 0) ? <UserSuggestion closeFunction={() => {
