@@ -7,6 +7,7 @@ import Link from "next/link";
 import CookieManager from "@/public/js/CookieManager";
 import settings from "@/settings";
 import Verified from "./Verified";
+import { IoCloseOutline } from "react-icons/io5";
 
 export default function Sidebar({ loggedUser, setLoggedUser }) {
     const { pending, matchs, sents } = loggedUser.matches;
@@ -94,11 +95,9 @@ export default function Sidebar({ loggedUser, setLoggedUser }) {
                                     </a>
                                     <div className={styles.options}>
                                         <Tippy theme="nemtinder" content="❤ Match ❤">
-
                                             <button onClick={() => matchUser(pending.id, "SEND")}><FaHeart /></button>
                                         </Tippy>
                                         <Tippy theme="nemtinder" content="Recusar">
-
                                             <button onClick={() => matchUser(pending.id, "REFUSE")}><FaHeartBroken /></button>
                                         </Tippy>
                                     </div>
@@ -113,6 +112,11 @@ export default function Sidebar({ loggedUser, setLoggedUser }) {
                         {
                             matchs.map(pending => <li className={styles.userli} key={pending.id}>
                                 <div className={styles.user}>
+                                    <Tippy content="Desfazer match" theme="nemtinder">
+                                        <div style={{cursor: "pointer"}} onClick={() => matchUser(pending.id, "REFUSE")}>
+                                            <IoCloseOutline />
+                                        </div>
+                                    </Tippy>
                                     <div className={styles.avatardiv}>
                                         <img src={pending.avatar} />
                                     </div>
