@@ -6,6 +6,7 @@ import { IoClose } from "react-icons/io5";
 import Link from "next/link";
 import CookieManager from "@/public/js/CookieManager";
 import settings from "@/settings";
+import Verified from "./Verified";
 
 export default function Sidebar({ loggedUser, setLoggedUser }) {
     const { pending, matchs, sents } = loggedUser.matches;
@@ -89,6 +90,7 @@ export default function Sidebar({ loggedUser, setLoggedUser }) {
                                     </div>
                                     <a href={`/?user=${pending.id}`}>
                                         <span>{pending.name}</span>
+                                        <Verified flags={pending.flags} />
                                     </a>
                                     <div className={styles.options}>
                                         <Tippy theme="nemtinder" content="❤ Match ❤">
@@ -116,6 +118,7 @@ export default function Sidebar({ loggedUser, setLoggedUser }) {
                                     </div>
                                     <a href={`/?user=${pending.id}`}>
                                         <span>{pending.name}</span>
+                                        <Verified flags={pending.flags} />
                                     </a>
                                     <div className={styles.options}>
                                         <Tippy theme="nemtinder" content="Mensagem">
@@ -138,6 +141,7 @@ export default function Sidebar({ loggedUser, setLoggedUser }) {
                                     </div>
                                     <a href={`/?user=${pending.id}`}>
                                         <span>{pending.name}</span>
+                                        <Verified flags={pending.flags} />
                                     </a>
                                     <div className={styles.options}>
                                         <Tippy theme="nemtinder" content="Cancelar">

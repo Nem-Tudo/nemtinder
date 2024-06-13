@@ -2,6 +2,7 @@ import Link from "next/link";
 import styles from "./Header.module.css"
 import { IoIosNotificationsOutline } from "react-icons/io";
 import Tippy from "@tippyjs/react";
+import Verified from "./Verified";
 
 export default function Header({ data = {} }) {
     return (
@@ -26,6 +27,7 @@ export default function Header({ data = {} }) {
                             </Tippy>
                             <div className={styles.user}>
                                 <span>{data.user.name}</span>
+                                <Verified flags={data.user.flags} />
                                 <Tippy theme="nemtinder" content="Meu perfil">
                                     <Link className={styles.avatardiv} href={"/profile"}>
                                         <img src={data.user.avatar} />
