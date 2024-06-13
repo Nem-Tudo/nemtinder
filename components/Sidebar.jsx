@@ -80,7 +80,7 @@ export default function Sidebar({ loggedUser, setLoggedUser }) {
             </section>
             <section className={styles.sidebar + " " + styles.sidebar_closed}>
                 <div className={styles.group}>
-                    <h2>Pendentes</h2>
+                    <h2>Pendentes ({pending.length})</h2>
                     <ul>
                         {
                             pending.map(pending => <li className={styles.userli} key={pending.id}>
@@ -108,7 +108,7 @@ export default function Sidebar({ loggedUser, setLoggedUser }) {
                     </ul>
                 </div>
                 <div className={styles.group}>
-                    <h2>Matchs</h2>
+                    <h2>Matchs ({matchs.length})</h2>
                     <ul>
                         {
                             matchs.map(pending => <li className={styles.userli} key={pending.id}>
@@ -131,7 +131,7 @@ export default function Sidebar({ loggedUser, setLoggedUser }) {
                     </ul>
                 </div>
                 <div className={styles.group}>
-                    <h2>Enviados</h2>
+                    <h2>Enviados ({sents.length})</h2>
                     <ul>
                         {
                             sents.map(pending => <li className={styles.userli} key={pending.id}>
