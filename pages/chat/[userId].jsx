@@ -165,6 +165,9 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
 
 
     async function sendMessage() {
+        const typing = JSON.parse(JSON.stringify(typingMessage));
+        setTypingMessage({ content: "" });
+        
         const request = await fetch(`${settings.apiURL}/channels/${channel.id}/messages`, {
             method: "POST",
             headers: {
@@ -172,7 +175,7 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                content: typingMessage.content
+                content: typing.content
             })
         })
 
@@ -183,12 +186,11 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
         }
         channel.messages.push(response);
         updateStateObject(setChannel, channel, ["messages", channel.messages]);
-        setTypingMessage({ content: "" })
-    }
-
-
-    return (
-        <>
+        }
+        
+        
+        return (
+            <>
             <Head>
                 <title>NemTinder</title>
                 <meta name="description" content="Acesse o NemTinder" />
