@@ -8,9 +8,14 @@ import CookieManager from "@/public/js/CookieManager";
 import settings from "@/settings";
 import Verified from "./Verified";
 import { IoCloseOutline } from "react-icons/io5";
+import { useEffect } from "react";
 
-export default function Sidebar({ loggedUser, setLoggedUser }) {
+export default function Sidebar({ loggedUser, setLoggedUser, notifications }) {
     const { pending, matchs, sents } = loggedUser.matches;
+
+    useEffect(() => {
+        console.log("NOT", notifications)
+    }, [notifications])
 
 
     const cookies = new CookieManager();
@@ -110,10 +115,34 @@ export default function Sidebar({ loggedUser, setLoggedUser }) {
                     <h2>Matchs ({matchs.length})</h2>
                     <ul>
                         {
-                            matchs.map(pending => <li className={styles.userli} key={pending.id}>
+                            matchs.filter(m => notifications.includes(m.id)).map(pending => <li className={styles.userli} key={pending.id}>
                                 <div className={styles.user}>
                                     <Tippy content="Desfazer match" theme="nemtinder">
-                                        <div style={{cursor: "pointer"}} onClick={() => matchUser(pending.id, "REFUSE")}>
+                                        <div style={{ cursor: "pointer" }} onClick={() => matchUser(pending.id, "REFUSE")}>
+                                            <IoCloseOutline />
+                                        </div>
+                                    </Tippy>
+                                    <div className={styles.avatardiv}>
+                                        <img src={pending.avatar} />
+                                    </div>
+                                    <a href={`/?user=${pending.id}`}>
+                                        <span>{pending.name}</span>
+                                        <Verified flags={pending.flags} />
+                                    </a>
+                                    <div style={{ backgroundColor: "red", width: "10px", height: "10px", borderRadius: "50%" }}></div>
+                                    <div className={styles.options}>
+                                        <Tippy theme="nemtinder" content="Mensagem">
+                                            <a href={`/chat/${pending.id}`}><CiMail /></a >
+                                        </Tippy>
+                                    </div>
+                                </div>
+                            </li>)
+                        }
+                        {
+                            matchs.filter(m => !notifications.includes(m.id)).map(pending => <li className={styles.userli} key={pending.id}>
+                                <div className={styles.user}>
+                                    <Tippy content="Desfazer match" theme="nemtinder">
+                                        <div style={{ cursor: "pointer" }} onClick={() => matchUser(pending.id, "REFUSE")}>
                                             <IoCloseOutline />
                                         </div>
                                     </Tippy>
