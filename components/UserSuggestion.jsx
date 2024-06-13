@@ -45,6 +45,7 @@ export default function UserSuggestion({ user, matchFunction, closeFunction }) {
                             <img src={user.avatar} />
                         </div>
                         <h2>{user.username}</h2>
+                        <Verified flags={user.flags} />
                         {getGenderText(user.gender)}
                     </div>
                     <div className={styles.aboutuser}>
