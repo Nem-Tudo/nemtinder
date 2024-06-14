@@ -4,7 +4,7 @@ import Head from "next/head"
 import styles from "./userId.module.css"
 import { IoSend } from "react-icons/io5";
 import { io } from 'socket.io-client';
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
 import settings from "@/settings";
 import { APIError } from "@/components/APIError";
 import { parseCookies } from "nookies";
@@ -111,6 +111,40 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
 
     let notificationSound = null;
     let matchSound = null;
+
+    useEffect(() => {
+        const handlePaste = (event) => {
+            const items = (event.clipboardData || event.originalEvent.clipboardData).items;
+
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].kind === 'file') {
+                    const file = items[i].getAsFile();
+
+                    if (file && file.type.startsWith('image/')) {
+                        // Create a DataTransfer to update the input file
+                        const dataTransfer = new DataTransfer();
+                        dataTransfer.items.add(file);
+                        document.querySelector('#input_file').files = dataTransfer.files;
+
+                        const event = new Event('change', { bubbles: true });
+                        document.querySelector('#input_file').dispatchEvent(event);
+                    }
+                }
+            }
+        };
+
+        const textInput = document.getElementById('textinput');
+        if (textInput) {
+            textInput.addEventListener('paste', handlePaste);
+        }
+
+        // Cleanup event listener on component unmount
+        return () => {
+            if (textInput) {
+                textInput.removeEventListener('paste', handlePaste);
+            }
+        };
+    }, []);
 
     useEffect(() => {
         window.onfocus = function () {
@@ -295,7 +329,7 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
                                 if (e.keyCode == 13) {
                                     sendMessage()
                                 }
-                            }} value={typingMessage.content} onChange={(e) => updateStateObject(setTypingMessage, typingMessage, ["content", e.target.value])} type="text" placeholder={`Conversar com ${user.name}`} />
+                            }} value={typingMessage.content} onChange={(e) => updateStateObject(setTypingMessage, typingMessage, ["content", e.target.value])} type="text" id="textinput" placeholder={`Conversar com ${user.name}`} />
                             <button onClick={() => sendMessage()}><IoSend /></button>
                         </div>
                     </div>

@@ -89,7 +89,7 @@ export default function Sidebar({ loggedUser, setLoggedUser, notifications }) {
                     <h2>Pendentes ({pending.length})</h2>
                     <ul>
                         {
-                            pending.map(pending => <li className={styles.userli} key={pending.id}>
+                            pending.map((pending, index) => <li className={styles.userli} key={pending.id + "_" + index}>
                                 <div className={styles.user}>
                                     <div className={styles.avatardiv}>
                                         <img src={pending.avatar} />
@@ -115,7 +115,7 @@ export default function Sidebar({ loggedUser, setLoggedUser, notifications }) {
                     <h2>Matchs ({matchs.length})</h2>
                     <ul>
                         {
-                            matchs.filter(m => notifications.includes(m.id)).map(pending => <li className={styles.userli} key={pending.id}>
+                            matchs.filter(m => notifications.includes(m.id)).map((pending, index) => <li className={styles.userli} key={pending.id + "_" + index}>
                                 <div className={styles.user}>
                                     <Tippy content="Desfazer match" theme="nemtinder">
                                         <div style={{ cursor: "pointer" }} onClick={() => matchUser(pending.id, "REFUSE")}>
@@ -139,7 +139,7 @@ export default function Sidebar({ loggedUser, setLoggedUser, notifications }) {
                             </li>)
                         }
                         {
-                            matchs.filter(m => !notifications.includes(m.id)).map(pending => <li className={styles.userli} key={pending.id}>
+                            matchs.filter(m => !notifications.includes(m.id)).map((pending, index) => <li className={styles.userli} key={pending.id + "_" + index}>
                                 <div className={styles.user}>
                                     <Tippy content="Desfazer match" theme="nemtinder">
                                         <div style={{ cursor: "pointer" }} onClick={() => matchUser(pending.id, "REFUSE")}>
@@ -167,7 +167,7 @@ export default function Sidebar({ loggedUser, setLoggedUser, notifications }) {
                     <h2>Enviados ({sents.length})</h2>
                     <ul>
                         {
-                            sents.map(pending => <li className={styles.userli} key={pending.id}>
+                            sents.map((pending, index) => <li className={styles.userli} key={pending.id + "_" + index}>
                                 <div className={styles.user}>
                                     <div className={styles.avatardiv}>
                                         <img src={pending.avatar} />
