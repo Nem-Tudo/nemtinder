@@ -11,6 +11,8 @@ import { parseCookies } from "nookies";
 import nodefetch from "node-fetch"
 import CookieManager from "@/public/js/CookieManager";
 import UnreadUsersMessages from "@/public/js/UnreadUsersMessages";
+import { FaImage } from "react-icons/fa";
+import Tippy from "@tippyjs/react";
 
 export async function getServerSideProps({ query, req, res }) {
     const cookies = parseCookies({ req })
@@ -99,8 +101,9 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
     const [loggedUser, setLoggedUser] = useState(loggedUser_);
     const [channel, setChannel] = useState(channel_);
     const [user, setUser] = useState(user_);
-    const [typingMessage, setTypingMessage] = useState({ content: "" });
+    const [typingMessage, setTypingMessage] = useState({ content: "", file: null });
     const [notifications, setNotifications] = useState([]);
+    const [uploadFiles, setUploadFiles] = useState({})
     // const [unreadUsers, setUnreadUsers] = useState(unreadUsersMessages.getAll())
 
     if (apiError) return <APIError />
@@ -168,7 +171,16 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
 
     async function sendMessage() {
         const typing = JSON.parse(JSON.stringify(typingMessage));
-        setTypingMessage({ content: "" });
+        setTypingMessage({ content: "", file: null });
+
+        const { result, errors } = await postFiles(uploadFiles, setUploadFiles);
+        if (errors.length > 0) {
+            return alert(`Erro ao enviar arquivos:\n\n${errors.map(e => `${e.key}: ${e.message}\n`)}`)
+        }
+
+        if (result.input_file) {
+            typing.file = result.input_file;
+        }
 
         const request = await fetch(`${settings.apiURL}/channels/${channel.id}/messages`, {
             method: "POST",
@@ -177,7 +189,8 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                content: typing.content
+                content: typing.content,
+                file: typing.file,
             })
         })
 
@@ -188,6 +201,38 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
         }
         channel.messages.push(response);
         updateStateObject(setChannel, channel, ["messages", channel.messages]);
+    }
+
+    async function postFiles(uploadFiles, setUploadFiles) {
+        const errors = [];
+        const result = {};
+        for (const key of Object.keys(uploadFiles)) {
+            const file = uploadFiles[key];
+            if (file) {
+                const formData = new FormData();
+                formData.append("file", file.file);
+                formData.append("folder", file.folder);
+                const request = await fetch(`${settings.apiURL}/uploadfile`, {
+                    method: "POST",
+                    headers: {
+                        "authorization": cookies.getCookie("authorization")
+                    },
+                    body: formData
+                })
+
+                const response = await request.json();
+                if (request.status == 200) {
+                    result[key] = response.url;
+                } else {
+                    errors.push({ key, message: response.message });
+                }
+
+            }
+        }
+
+        setUploadFiles({});
+
+        return { errors, result };
     }
 
 
@@ -219,6 +264,7 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
                                             <img src={getAuthorById(message.authorId).avatar} />
                                         </div>
                                         <p>{message.content}</p>
+                                        {message.file && <div className={styles.content_image}><img src={message.file} /></div>}
                                     </div>
                                 </div>)
                             }
@@ -226,6 +272,25 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
                     </div>
                     <div className={styles.channelinput}>
                         <div className={styles.channelinput_sendmessage}>
+                            <div className={styles.fileupload}>
+                                <input style={{ display: 'none' }} onChange={async e => {
+                                    updateStateObject(setTypingMessage, typingMessage, ["file", await fileToBlobUrl(e.target.files[0])])
+                                    uploadFiles.input_file = { file: e.target.files[0] };
+                                    setUploadFiles(uploadFiles)
+                                }} type="file" id="input_file" />
+                                <label htmlFor="input_file">
+                                    <FaImage />
+                                </label>
+                                {
+                                    typingMessage.file && <Tippy content="Clique para remover">
+                                        <img src={typingMessage.file} onClick={async () => {
+                                            updateStateObject(setTypingMessage, typingMessage, ["file", null])
+                                            uploadFiles.input_file = null
+                                            setUploadFiles(uploadFiles)
+                                        }} />
+                                    </Tippy>
+                                }
+                            </div>
                             <input onKeyDown={(e) => {
                                 if (e.keyCode == 13) {
                                     sendMessage()
@@ -265,4 +330,23 @@ function updateStateObject(func, obj, ...updates) {
     }
 
     func(_obj);
+}
+
+function fileToBlobUrl(fileInput) {
+    if (!fileInput) return ""
+    return new Promise((resolve, reject) => {
+        const fileReader = new FileReader();
+
+        fileReader.onload = function (event) {
+            const blob = new Blob([event.target.result], { type: fileInput.type });
+            const blobUrl = URL.createObjectURL(blob);
+            resolve(blobUrl);
+        };
+
+        fileReader.onerror = function (error) {
+            reject(error);
+        };
+
+        fileReader.readAsArrayBuffer(fileInput);
+    });
 }
