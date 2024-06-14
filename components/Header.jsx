@@ -3,7 +3,7 @@ import styles from "./Header.module.css"
 import { IoIosNotificationsOutline } from "react-icons/io";
 import Tippy from "@tippyjs/react";
 import Verified from "./Verified";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import settings from "@/settings";
 import CookieManager from "@/public/js/CookieManager";
 
@@ -12,6 +12,14 @@ export default function Header({ data = {} }) {
     const [notifications, setNotifications] = useState(null);
 
     const cookies = new CookieManager()
+
+    useEffect(() => {
+        document.onkeydown = (e) => {
+            if(notifications && e.keyCode === 27){
+                setNotifications(null)
+            }
+        }
+    }, [])
 
     async function openNotifications() {
         const request = await fetch(`${settings.apiURL}/users/@me/notifications`, {

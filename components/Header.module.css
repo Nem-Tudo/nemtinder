@@ -95,6 +95,8 @@
     color: black;
     min-width: 50%;
     position: relative;
+    max-height: 80vh;
+    overflow: scroll
 }
 
 .notifications .notifications_title{
@@ -138,6 +140,7 @@
     color: white;
     border-radius: 7px;
     width: fit-content;
+    cursor: pointer;
 }
 
 .notifications_close{
