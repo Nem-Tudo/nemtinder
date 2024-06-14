@@ -3,8 +3,34 @@ import styles from "./Header.module.css"
 import { IoIosNotificationsOutline } from "react-icons/io";
 import Tippy from "@tippyjs/react";
 import Verified from "./Verified";
+import { useState } from "react";
+import settings from "@/settings";
+import CookieManager from "@/public/js/CookieManager";
 
 export default function Header({ data = {} }) {
+
+    const [notifications, setNotifications] = useState(null);
+
+    const cookies = new CookieManager()
+
+    async function openNotifications() {
+        const request = await fetch(`${settings.apiURL}/users/@me/notifications`, {
+            method: "GET",
+            headers: {
+                "authorization": cookies.getCookie("authorization"),
+            }
+        })
+
+        const response = await request.json();
+
+        if (request.status != 200) {
+            return alert(`Erro ao obter notificações: ${response?.errors ? response.errors.map(e => `${e.path}: ${e.message}`).join("\n") : response?.message}`)
+        }
+
+        setNotifications(response.reverse());
+    }
+
+
     return (
         <>
 
@@ -21,7 +47,7 @@ export default function Header({ data = {} }) {
                     {
                         data.user ? <>
                             <Tippy theme="nemtinder" content="Notificações">
-                                <div className={styles.icon}>
+                                <div className={styles.icon} onClick={() => openNotifications()}>
                                     <IoIosNotificationsOutline />
                                 </div>
                             </Tippy>
@@ -44,6 +70,33 @@ export default function Header({ data = {} }) {
                     }
                 </div>
             </header>
+
+            {
+                notifications && <div className={styles.notifications_background}>
+                    <div className={styles.notifications}>
+                        <div className={styles.notifications_options}>
+                            <span className={styles.notifications_title}>Notificações</span>
+                            <button onClick={() => setNotifications(null)} className={styles.notifications_close}>Fechar</button>
+                        </div>
+                        <ul>
+                            {
+                                notifications.map((not) => <li className={styles.notification}>
+                                    <div className={styles.notification_author}>
+                                        <a href={`/?user=${not.authorId}`}>{not.authorUsername}</a>
+                                    </div>
+                                    <div className={styles.notification_content}>
+                                        <span>{not.content}</span>
+                                        {not.extraContent && <span className={styles.notification_extraContent}>{not.extraContent}</span>}
+                                    </div>
+                                    <div className={styles.notification_button}>
+                                        <a href={not.button_url}>{not.button_text}</a>
+                                    </div>
+                                </li>)
+                            }
+                        </ul>
+                    </div>
+                </div>
+            }
         </>
     )
 }
