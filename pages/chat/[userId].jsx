@@ -105,13 +105,22 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
     const [typingMessage, setTypingMessage] = useState({ content: "", file: null });
     const [notifications, setNotifications] = useState([]);
     const [uploadFiles, setUploadFiles] = useState({})
+    const [scrollTimes, setScrollTimes] = useState(0)
     // const [unreadUsers, setUnreadUsers] = useState(unreadUsersMessages.getAll())
-
     if (apiError) return <APIError />
 
 
     let notificationSound = null;
     let matchSound = null;
+
+    useEffect(() => {
+        console.log(scrollTimes)
+        document.querySelector(`.${styles.channelContent}`)?.scrollTo({
+            top: document.querySelector(`.${styles.channelContent}`)?.scrollHeight,
+            behavior: scrollTimes === 0 ? "instant" : 'smooth'
+        })
+        setScrollTimes(scrollTimes + 1)
+    }, [channel])
 
     useEffect(() => {
         const handlePaste = (event) => {
