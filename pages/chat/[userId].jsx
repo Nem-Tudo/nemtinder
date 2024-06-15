@@ -202,6 +202,7 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
             if (channel.id === message.channelId) {
                 channel.messages.push(message);
                 updateStateObject(setChannel, channel, ["messages", channel.messages]);
+                setUserTyping(false);
                 if (!focused) notificationSound.play()
             } else {
                 notificationSound.play()
