@@ -13,6 +13,7 @@ import CookieManager from "@/public/js/CookieManager";
 import UnreadUsersMessages from "@/public/js/UnreadUsersMessages";
 import { FaImage } from "react-icons/fa";
 import Tippy from "@tippyjs/react";
+import Moment from "react-moment";
 
 export async function getServerSideProps({ query, req, res }) {
     const cookies = parseCookies({ req })
@@ -301,8 +302,13 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
                                         <div className={styles.avatardiv}>
                                             <img src={getAuthorById(message.authorId).avatar} />
                                         </div>
-                                        <p>{message.content}</p>
-                                        {message.file && <div className={styles.content_image}><img src={message.file} /></div>}
+                                        <div className={styles.message_content_data}>
+                                            <p>{message.content}</p>
+                                            {message.file && <div className={styles.content_image}><img src={message.file} /></div>}
+                                            <Tippy content={<Moment format="DD/MM/YY hh:mm:ss">{message.createdAt}</Moment>}>
+                                                <span className={styles.messagetime}><Moment format="DD/MM hh:mm">{message.createdAt}</Moment></span>
+                                            </Tippy>
+                                        </div>
                                     </div>
                                 </div>)
                             }

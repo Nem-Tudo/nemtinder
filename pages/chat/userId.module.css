@@ -143,6 +143,7 @@
     align-items: center;
     justify-content: center;
     border-radius: 5px;
+    margin-top: 7px;
 }
 
 .content_image img{
@@ -165,6 +166,17 @@
     width: 30px;
     height: 30px;
     margin-left: 10px;
+}
+
+.message_content_data{
+    margin-right: 7px;
+}
+
+.messagetime{
+    color: rgba(255, 255, 255, 0.61);
+    font-size: 0.7rem;
+    cursor: pointer;
+    margin: 0 3px;
 }
 
 @media (min-width: 1200px) {
