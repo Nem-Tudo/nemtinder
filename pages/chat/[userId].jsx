@@ -305,8 +305,8 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
                                         <div className={styles.message_content_data}>
                                             <p>{message.content}</p>
                                             {message.file && <div className={styles.content_image}><img src={message.file} /></div>}
-                                            <Tippy content={<Moment format="DD/MM/YY hh:mm:ss">{message.createdAt}</Moment>}>
-                                                <span className={styles.messagetime}><Moment format="DD/MM hh:mm">{message.createdAt}</Moment></span>
+                                            <Tippy content={<Moment format="DD/MM/YY HH:mm:ss">{message.createdAt}</Moment>}>
+                                                <span className={styles.messagetime}><Moment format="DD/MM HH:mm">{message.createdAt}</Moment></span>
                                             </Tippy>
                                         </div>
                                     </div>
