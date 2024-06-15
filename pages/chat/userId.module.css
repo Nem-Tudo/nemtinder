@@ -179,6 +179,14 @@
     margin: 0 3px;
 }
 
+.typing{
+    margin-left: 10px;
+    background-color: white;
+    width: fit-content;
+    padding: 7px;
+    border-radius: 5px;
+}
+
 @media (min-width: 1200px) {
     .channelinput {
         width: calc(100% - 303px)

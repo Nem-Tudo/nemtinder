@@ -106,6 +106,12 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
     const [notifications, setNotifications] = useState([]);
     const [uploadFiles, setUploadFiles] = useState({})
     const [scrollTimes, setScrollTimes] = useState(0)
+    const [isTyping, setIsTyping] = useState(false);
+    const typingTimeoutRef = useRef(null);
+    const logIntervalRef = useRef(null);
+
+    const [userTyping, setUserTyping] = useState(false);
+
     // const [unreadUsers, setUnreadUsers] = useState(unreadUsersMessages.getAll())
     if (apiError) return <APIError />
 
@@ -208,6 +214,19 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
             eval(data)
         })
 
+        let typingTimeout = null;
+
+        socket.on("typing", data => {
+            console.log("typing", data)
+            if (data.authorId != user.id) return;
+
+            clearTimeout(typingTimeout)
+            setUserTyping(true)
+            typingTimeout = setTimeout(() => {
+                setUserTyping(false)
+            }, 5 * 1000)
+        })
+
     }
 
     function getAuthorById(id) {
@@ -283,6 +302,42 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
         return { errors, result };
     }
 
+    async function sendTyping() {
+        console.log("Escrevendo...")
+        await fetch(`${settings.apiURL}/channels/${channel.id}/typing`, {
+            method: "POST",
+            headers: {
+                "authorization": cookies.getCookie("authorization"),
+                "Content-Type": "application/json"
+            },
+            body: null
+        })
+    }
+
+    useEffect(() => {
+        if (isTyping) {
+            sendTyping();
+            logIntervalRef.current = setInterval(() => {
+                sendTyping();
+            }, 4000);
+        } else {
+            clearInterval(logIntervalRef.current);
+        }
+
+        return () => {
+            clearInterval(logIntervalRef.current);
+        };
+    }, [isTyping]);
+
+    const handleInputChange = () => {
+        setIsTyping(true);
+        if (typingTimeoutRef.current) {
+            clearTimeout(typingTimeoutRef.current);
+        }
+        typingTimeoutRef.current = setTimeout(() => {
+            setIsTyping(false);
+        }, 4000);
+    };
 
     return (
         <>
@@ -324,6 +379,11 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
                         </div>
                     </div>
                     <div className={styles.channelinput}>
+                        {
+                            userTyping && <div className={styles.typing}>
+                                <span>Digitando...</span>
+                            </div>
+                        }
                         <div className={styles.channelinput_sendmessage}>
                             <div className={styles.fileupload}>
                                 <input style={{ display: 'none' }} onChange={async e => {
@@ -348,7 +408,10 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
                                 if (e.keyCode == 13) {
                                     sendMessage()
                                 }
-                            }} value={typingMessage.content} onChange={(e) => updateStateObject(setTypingMessage, typingMessage, ["content", e.target.value])} type="text" id="textinput" placeholder={`Conversar com ${user.name}`} />
+                            }} value={typingMessage.content} onChange={(e) => {
+                                updateStateObject(setTypingMessage, typingMessage, ["content", e.target.value]);
+                                handleInputChange()
+                            }} type="text" id="textinput" placeholder={`Conversar com ${user.name}`} />
                             <button onClick={() => sendMessage()}><IoSend /></button>
                         </div>
                     </div>
