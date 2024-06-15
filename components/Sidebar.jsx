@@ -187,7 +187,7 @@ export default function Sidebar({ loggedUser, setLoggedUser, notifications }) {
                     </ul>
                 </div>
                 <div className={styles.group}>
-                    <h2>Pulados ({jumps.length})</h2>
+                    <h2>Pulados ({loggedUser.jump_count})</h2>
                     <span style={{ display: "block", marginBottom: "5px" }}>Usuários que você pulou duas ou mais vezes e não são mais recomendados</span>
                     {
                         loggedUser.flags.includes("VERIFIED") && <ul>
