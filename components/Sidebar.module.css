@@ -103,6 +103,10 @@
     width: 100%;
 }
 
+.sidebar a:hover{
+    text-decoration: underline;
+}
+
 .sidebarbackground {
     background: rgba(0, 0, 0, 0.137);
     width: 100%;

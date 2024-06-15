@@ -181,7 +181,16 @@ export default function Home({ loggedUser: _loggedUser, apiError }) {
     func(_obj);
   }
 
-  console.log(feed[showingFeedItem])
+  async function jumpUser(userId) {
+    fetch(`${settings.apiURL}/users/${userId}/matches/jump`, {
+      method: "POST",
+      headers: {
+        "authorization": cookies.getCookie("authorization"),
+        "Content-Type": "application/json"
+      },
+      body: null
+    })
+  }
 
   return (
     <>
@@ -198,8 +207,9 @@ export default function Home({ loggedUser: _loggedUser, apiError }) {
           {
             (feed.length > 0) ? <UserSuggestion closeFunction={() => {
               const nextItem = showingFeedItem + 1;
-              if (nextItem >= feed.length) return alert("Acabou os usuários :(\nChame mais amigos para termos mais gente!")
-              setShowingFeedItem(nextItem)
+              if (nextItem >= feed.length) return alert("Acabou os usuários :(\nChame mais amigos para termos mais gente!");
+              jumpUser(feed[showingFeedItem]?.id);
+              setShowingFeedItem(nextItem);
             }} matchFunction={async () => {
               await matchUser(feed[showingFeedItem].id, "SEND")
               const nextItem = showingFeedItem + 1;

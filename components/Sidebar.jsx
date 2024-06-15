@@ -11,7 +11,7 @@ import { IoCloseOutline } from "react-icons/io5";
 import { useEffect } from "react";
 
 export default function Sidebar({ loggedUser, setLoggedUser, notifications }) {
-    const { pending, matchs, sents } = loggedUser.matches;
+    const { pending, matchs, sents, jumps } = loggedUser.matches;
 
     useEffect(() => {
         console.log("NOT", notifications)
@@ -185,6 +185,35 @@ export default function Sidebar({ loggedUser, setLoggedUser, notifications }) {
                             </li>)
                         }
                     </ul>
+                </div>
+                <div className={styles.group}>
+                    <h2>Pulados ({jumps.length})</h2>
+                    <span style={{ display: "block", marginBottom: "5px" }}>Usuários que você pulou duas ou mais vezes e não são mais recomendados</span>
+                    {
+                        loggedUser.flags.includes("VERIFIED") && <ul>
+                            {
+                                jumps.map((pending, index) => <li className={styles.userli} key={pending.id + "_" + index}>
+                                    <div className={styles.user}>
+                                        <div className={styles.avatardiv}>
+                                            <img src={pending.avatar} />
+                                        </div>
+                                        <a href={`/?user=${pending.id}`}>
+                                            <span>{pending.name}</span>
+                                            <Verified flags={pending.flags} />
+                                        </a>
+                                        <div className={styles.options}>
+                                            <Tippy theme="nemtinder" content="❤ Match ❤">
+                                                <button onClick={() => matchUser(pending.id, "SEND")}><FaHeart /></button>
+                                            </Tippy>
+                                        </div>
+                                    </div>
+                                </li>)
+                            }
+                        </ul>
+                    }
+                    {
+                        !loggedUser.flags.includes("VERIFIED") && <span style={{marginTop: "10px", display: "block", border: "1px solid var(--theme-color)", padding: "7px", borderRadius: "5px"}}>Obtenha <a style={{color: "red", fontWeight: "500"}} href="/premium">Premium</a> para visualizar ou enviar match</span>
+                    }
                 </div>
             </section>
             <div className={styles.sidebarbackground} onClick={() => closeSidebar()}>
