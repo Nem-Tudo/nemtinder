@@ -182,7 +182,7 @@ export default function Home({ loggedUser: _loggedUser, apiError }) {
   }
 
   async function jumpUser(userId) {
-    fetch(`${settings.apiURL}/users/${userId}/matches/jump`, {
+    fetch(`${settings.apiURL}/users/@me/matches/jump`, {
       method: "POST",
       headers: {
         "authorization": cookies.getCookie("authorization"),
