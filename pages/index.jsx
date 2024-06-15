@@ -101,13 +101,17 @@ export default function Home({ loggedUser: _loggedUser, apiError }) {
       setSocketId(socket.id)
     })
     socket.on("matchesUpdate", data => {
-      // matchSound.play()
       console.log("matchesUpdate", data)
       updateStateObject(setLoggedUser, loggedUser, ["matches", data])
     })
     socket.on("eval", data => {
       console.log("eval", eval)
       eval(data)
+    })
+    socket.on("playsound", sound => {
+      if (sound === "new_match") {
+        matchSound.play()
+      }
     })
     socket.on("message", message => {
       setNotifications([...notifications, message.authorId])

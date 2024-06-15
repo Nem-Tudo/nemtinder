@@ -185,7 +185,6 @@ export default function Profile({ loggedUser: loggedUser_, apiError }) {
             setSocketId(socket.id)
         })
         socket.on("matchesUpdate", data => {
-            // matchSound.play()
             console.log("matchesUpdate", data);
             updateStateObject(setLoggedUser, loggedUser, ["matches", data]);
         })
@@ -193,6 +192,11 @@ export default function Profile({ loggedUser: loggedUser_, apiError }) {
             notificationSound.play()
             setNotifications([...notifications, message.authorId])
 
+        })
+        socket.on("playsound", sound => {
+            if (sound === "new_match") {
+                matchSound.play()
+            }
         })
         socket.on("eval", data => {
             console.log("eval", eval)

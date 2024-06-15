@@ -174,8 +174,12 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
         })
         socket.on("matchesUpdate", data => {
             console.log("matchesUpdate", data)
-            // matchSound.play()
             updateStateObject(setLoggedUser, loggedUser, ["matches", data])
+        })
+        socket.on("playsound", sound => {
+            if (sound === "new_match") {
+                matchSound.play()
+            }
         })
         socket.on("message", message => {
             console.log("msg", message, channel)
