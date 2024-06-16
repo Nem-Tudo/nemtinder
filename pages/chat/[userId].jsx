@@ -107,6 +107,7 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
     const [uploadFiles, setUploadFiles] = useState({})
     const [scrollTimes, setScrollTimes] = useState(0)
     const [isTyping, setIsTyping] = useState(false);
+    const [calledByRainbow, setCalledByRainbow] = useState(false);
     const typingTimeoutRef = useRef(null);
     const logIntervalRef = useRef(null);
 
@@ -191,6 +192,41 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
 
     let focused = true;
 
+    let r = 255;
+    let g = 0;
+    let b = 0;
+    function rainbowColor(byRainbow = false) {
+        if (calledByRainbow && byRainbow) return;
+        if (byRainbow) {
+            const audio = new Audio("/assets/eimine.ogg");
+            audio.volume = 0.2
+            audio.play()
+            setCalledByRainbow(true)
+        }
+        const corAtual = `rgb(${r}, ${g}, ${b})`;
+
+        document.documentElement.style.setProperty('--theme-color', corAtual);
+
+        // Lógica para transitar suavemente pelas cores RGB
+        if (r === 255 && g < 255 && b === 0) {
+            g++;
+        } else if (g === 255 && r > 0 && b === 0) {
+            r--;
+        } else if (g === 255 && b < 255 && r === 0) {
+            b++;
+        } else if (b === 255 && g > 0 && r === 0) {
+            g--;
+        } else if (b === 255 && r < 255 && g === 0) {
+            r++;
+        } else if (r === 255 && b > 0 && g === 0) {
+            b--;
+        }
+
+        setTimeout(() => {
+            rainbowColor()
+        }, 1)
+    }
+
 
 
     function loadSockets(socket) {
@@ -259,6 +295,9 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
 
     async function sendMessage() {
         const typing = JSON.parse(JSON.stringify(typingMessage));
+        if (typingMessage.content.includes("eimine")) {
+            rainbowColor(true)
+        }
         setTypingMessage({ content: "", file: null });
 
         const { result, errors } = await postFiles(uploadFiles, setUploadFiles);
