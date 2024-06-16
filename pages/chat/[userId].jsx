@@ -207,6 +207,7 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
         socket.on("playsound", sound => {
             if (sound === "new_match") {
                 matchSound.play()
+                notify({ title: `Você recebeu um novo match!`, body: "Abra para ver de quem foi", tag: Date.now(), icon: "/logo.png", url: `/` })
             }
         })
         socket.on("message", message => {

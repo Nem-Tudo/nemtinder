@@ -125,6 +125,7 @@ export default function Home({ loggedUser: _loggedUser, apiError }) {
     socket.on("playsound", sound => {
       if (sound === "new_match") {
         matchSound.play()
+        notify({ title: `Você recebeu um novo match!`, body: "Abra para ver de quem foi", tag: Date.now(), icon: "/logo.png", url: `/` })
       }
     })
     socket.on("message", message => {
