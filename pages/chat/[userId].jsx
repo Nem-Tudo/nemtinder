@@ -206,9 +206,13 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
                 setInterval(() => {
                     setUserTyping(false);
                 }, 300)
-                if (!focused) notificationSound.play()
+                if (!focused) {
+                    notificationSound.play();
+                    notify({ title: `Mensagem de ${message.authorUsername}`, body: message.content, tag: message.id, icon: "/logo.png", url: `/chat/${message.authorId}` })
+                }
             } else {
                 notificationSound.play()
+                notify({ title: `Mensagem de ${message.authorUsername}`, body: message.content, tag: message.id, icon: "/logo.png", url: `/chat/${message.authorId}` })
                 setNotifications([...notifications, message.authorId])
                 // setUnreadUsers(unreadUsersMessages.add(message.authorId))
             }
@@ -469,4 +473,40 @@ function fileToBlobUrl(fileInput) {
 
         fileReader.readAsArrayBuffer(fileInput);
     });
+}
+
+function notify({ title, body, tag, icon, url }) {
+    if (!window.Notification) {
+        console.log('Este browser não suporta Web Notifications!');
+        return;
+    }
+
+    if (Notification.permission === 'default') {
+        Notification.requestPermission(function () {
+            console.log('not request');
+        });
+    } else if (Notification.permission === 'granted') {
+        console.log('Usuário deu permissão');
+
+        const notification = new Notification(title, {
+            body,
+            tag,
+            icon,
+        });
+        notification.onshow = function () {
+            console.log('onshow')
+        },
+            notification.onclick = function () {
+                window.open(url)
+            },
+            notification.onclose = function () {
+                console.log('onclose')
+            },
+            notification.onerror = function () {
+                console.log('onerror')
+            }
+
+    } else if (Notification.permission === 'denied') {
+        console.log('Usuário não deu permissão');
+    }
 }

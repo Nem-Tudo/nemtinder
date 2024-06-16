@@ -79,6 +79,18 @@ export default function Home({ loggedUser: _loggedUser, apiError }) {
       query: `authorization=${cookies.getCookie("authorization")}`
     });
     loadSockets(socket);
+
+    if (!window.Notification) {
+      console.log('Este browser não suporta Web Notifications!');
+      return;
+    }
+
+    if (Notification.permission === 'default') {
+      Notification.requestPermission(function () {
+        console.log('not request');
+      });
+    }
+
   }, [])
 
   useEffect(() => {
@@ -115,6 +127,7 @@ export default function Home({ loggedUser: _loggedUser, apiError }) {
     })
     socket.on("message", message => {
       setNotifications([...notifications, message.authorId])
+      notify({ title: `Mensagem de ${message.authorUsername}`, body: message.content, tag: message.id, icon: "/logo.png", url: `/chat/${message.authorId}` })
       notificationSound.play()
     })
 
@@ -221,4 +234,40 @@ export default function Home({ loggedUser: _loggedUser, apiError }) {
       </main>
     </>
   );
+}
+
+function notify({ title, body, tag, icon, url }) {
+  if (!window.Notification) {
+    console.log('Este browser não suporta Web Notifications!');
+    return;
+  }
+
+  if (Notification.permission === 'default') {
+    Notification.requestPermission(function () {
+      console.log('not request');
+    });
+  } else if (Notification.permission === 'granted') {
+    console.log('Usuário deu permissão');
+
+    const notification = new Notification(title, {
+      body,
+      tag,
+      icon,
+    });
+    notification.onshow = function () {
+      console.log('onshow')
+    },
+      notification.onclick = function () {
+        window.open(url)
+      },
+      notification.onclose = function () {
+        console.log('onclose')
+      },
+      notification.onerror = function () {
+        console.log('onerror')
+      }
+
+  } else if (Notification.permission === 'denied') {
+    console.log('Usuário não deu permissão');
+  }
 }

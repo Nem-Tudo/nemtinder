@@ -84,6 +84,17 @@ export default function Login({ apiError }) {
 
             alert(`Seja bem vindo, ${response.user.username}!`)
 
+            if (!window.Notification) {
+                console.log('Este browser não suporta Web Notifications!');
+                return;
+            }
+
+            if (Notification.permission === 'default') {
+                Notification.requestPermission(function () {
+                    console.log('not request');
+                });
+            }
+
             location.href = "/"
 
         } catch (e) {
@@ -125,6 +136,17 @@ export default function Login({ apiError }) {
             cookie.setCookie("authorization", response.token);
 
             alert(`Registrado com sucesso ${response.user.username}!`);
+
+            if (!window.Notification) {
+                console.log('Este browser não suporta Web Notifications!');
+                return;
+            }
+
+            if (Notification.permission === 'default') {
+                Notification.requestPermission(function () {
+                    console.log('not request');
+                });
+            }
 
             location.href = "/profile"
 
