@@ -74,6 +74,18 @@ export default function Profile({ loggedUser: loggedUser_, apiError }) {
         const socket = io(settings.apiURL, {
             query: `authorization=${cookies.getCookie("authorization")}`
         });
+        document.onclick = () => {
+            if (!window.Notification) {
+                console.log('Este browser não suporta Web Notifications!');
+                return;
+            }
+
+            if (Notification.permission === 'default') {
+                Notification.requestPermission(function () {
+                    console.log('not request');
+                });
+            }
+        }
         loadSockets(socket);
     }, [])
 

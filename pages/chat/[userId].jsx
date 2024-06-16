@@ -170,6 +170,18 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
             focused = false;
         };
         window.socket?.disconnect()
+        document.onclick = () => {
+            if (!window.Notification) {
+                console.log('Este browser não suporta Web Notifications!');
+                return;
+            }
+
+            if (Notification.permission === 'default') {
+                Notification.requestPermission(function () {
+                    console.log('not request');
+                });
+            }
+        }
         const socket = io(settings.apiURL, {
             query: `authorization=${cookies.getCookie("authorization")}`
         });

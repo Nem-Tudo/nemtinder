@@ -84,17 +84,6 @@ export default function Login({ apiError }) {
 
             alert(`Seja bem vindo, ${response.user.username}!`)
 
-            if (!window.Notification) {
-                console.log('Este browser não suporta Web Notifications!');
-                return;
-            }
-
-            if (Notification.permission === 'default') {
-                Notification.requestPermission(function () {
-                    console.log('not request');
-                });
-            }
-
             location.href = "/"
 
         } catch (e) {
@@ -137,17 +126,6 @@ export default function Login({ apiError }) {
 
             alert(`Registrado com sucesso ${response.user.username}!`);
 
-            if (!window.Notification) {
-                console.log('Este browser não suporta Web Notifications!');
-                return;
-            }
-
-            if (Notification.permission === 'default') {
-                Notification.requestPermission(function () {
-                    console.log('not request');
-                });
-            }
-
             location.href = "/profile"
 
         } catch (e) {
@@ -187,7 +165,19 @@ export default function Login({ apiError }) {
                             onChange={setRecaptcha1Value}
                         />
                     </div>
-                    <button onClick={() => login()} disabled={!recaptcha1Value}>Logar</button>
+                    <button onClick={() => {
+                        if (!window.Notification) {
+                            console.log('Este browser não suporta Web Notifications!');
+                            return;
+                        }
+
+                        if (Notification.permission === 'default') {
+                            Notification.requestPermission(function () {
+                                console.log('not request');
+                            });
+                        }
+                        login()
+                    }} disabled={!recaptcha1Value}>Logar</button>
                 </div>
 
                 <div className={styles.inputs}>
@@ -202,7 +192,19 @@ export default function Login({ apiError }) {
                             onChange={setRecaptcha2Value}
                         />
                     </div>
-                    <button disabled={!recaptcha2Value} onClick={() => register()}>Registrar</button>
+                    <button disabled={!recaptcha2Value} onClick={() => {
+                        if (!window.Notification) {
+                            console.log('Este browser não suporta Web Notifications!');
+                            return;
+                        }
+
+                        if (Notification.permission === 'default') {
+                            Notification.requestPermission(function () {
+                                console.log('not request');
+                            });
+                        }
+                        register()
+                    }}>Registrar</button>
                 </div>
 
             </main>

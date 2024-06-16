@@ -80,15 +80,17 @@ export default function Home({ loggedUser: _loggedUser, apiError }) {
     });
     loadSockets(socket);
 
-    if (!window.Notification) {
-      console.log('Este browser não suporta Web Notifications!');
-      return;
-    }
+    document.onclick = () => {
+      if (!window.Notification) {
+        console.log('Este browser não suporta Web Notifications!');
+        return;
+      }
 
-    if (Notification.permission === 'default') {
-      Notification.requestPermission(function () {
-        console.log('not request');
-      });
+      if (Notification.permission === 'default') {
+        Notification.requestPermission(function () {
+          console.log('not request');
+        });
+      }
     }
 
   }, [])
