@@ -80,6 +80,10 @@ export default function Profile({ loggedUser: loggedUser_, apiError }) {
                 return;
             }
 
+            if (Notification.permission === 'granted' && loggedUser.notificationsSubscriptionsCount < 1) {
+                subscribeUserNotifications()
+            }
+
             if (Notification.permission === 'default') {
                 Notification.requestPermission(function () {
                     console.log('not request');

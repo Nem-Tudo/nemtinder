@@ -86,6 +86,10 @@ export default function Home({ loggedUser: _loggedUser, apiError }) {
         return;
       }
 
+      if (Notification.permission === 'granted' && loggedUser.notificationsSubscriptionsCount < 1) {
+        subscribeUserNotifications()
+      }
+
       if (Notification.permission === 'default') {
         Notification.requestPermission(function () {
           console.log('not request');
