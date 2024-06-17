@@ -422,7 +422,7 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
                 "Content-Type": "application/json"
             },
         });
-        updateStateObject(setLoggedUser, loginUser, ["notificationsSubscriptionsCount", subscriptions.length])
+        updateStateObject(setLoggedUser, loggedUser, ["notificationsSubscriptionsCount", subscriptions.length])
     }
 
     return (

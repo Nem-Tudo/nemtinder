@@ -231,7 +231,7 @@ export default function Home({ loggedUser: _loggedUser, apiError }) {
         "Content-Type": "application/json"
       },
     });
-    updateStateObject(setLoggedUser, loginUser, ["notificationsSubscriptionsCount", subscriptions.length])
+    updateStateObject(setLoggedUser, loggedUser, ["notificationsSubscriptionsCount", subscriptions.length])
   }
 
   return (

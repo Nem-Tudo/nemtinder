@@ -242,7 +242,7 @@ export default function Profile({ loggedUser: loggedUser_, apiError }) {
                 "Content-Type": "application/json"
             },
         });
-        updateStateObject(setLoggedUser, loginUser, ["notificationsSubscriptionsCount", subscriptions.length])
+        updateStateObject(setLoggedUser, loggedUser, ["notificationsSubscriptionsCount", subscriptions.length])
     }
 
     return (
