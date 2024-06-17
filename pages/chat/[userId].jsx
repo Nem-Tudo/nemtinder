@@ -177,7 +177,7 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
                 return;
             }
 
-            if (Notification.permission === 'granted' && loggedUser.notificationsSubscriptionsCount < 1) {
+            if (Notification.permission === 'granted') {
                 subscribeUserNotifications()
             }
 
@@ -408,13 +408,14 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
     };
 
     async function subscribeUserNotifications() {
+        if (window.localStorage.getItem("notificationSubscription")) return;
         const registration = await navigator.serviceWorker.ready;
         const subscription = await registration.pushManager.subscribe({
             userVisibleOnly: true,
             applicationServerKey: urlBase64ToUint8Array(settings.vapidKey)
         });
 
-        const subscriptions = await fetch(`${settings.apiURL}/notificationssubscribe`, {
+        await fetch(`${settings.apiURL}/notificationssubscribe`, {
             method: 'POST',
             body: JSON.stringify({ subscription }),
             headers: {
@@ -422,7 +423,8 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
                 "Content-Type": "application/json"
             },
         });
-        updateStateObject(setLoggedUser, loggedUser, ["notificationsSubscriptionsCount", subscriptions.length])
+
+        window.localStorage.setItem("notificationSubscription", subscription.endpoint);
     }
 
     return (
