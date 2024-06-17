@@ -89,7 +89,11 @@ export default function Home({ loggedUser: _loggedUser, apiError }) {
       if (Notification.permission === 'default') {
         Notification.requestPermission(function () {
           console.log('not request');
-        });
+        }).then(permission => {
+          if (permission === "granted") {
+            subscribeUserNotifications()
+          }
+        })
       }
     }
 
@@ -125,12 +129,12 @@ export default function Home({ loggedUser: _loggedUser, apiError }) {
     socket.on("playsound", sound => {
       if (sound === "new_match") {
         matchSound.play()
-        notify({ title: `Você recebeu um novo match!`, body: "Abra para ver de quem foi", tag: Date.now(), icon: "/logo.png", url: `/` })
+        // notify({ title: `Você recebeu um novo match!`, body: "Abra para ver de quem foi", tag: Date.now(), icon: "/logo.png", url: `/` })
       }
     })
     socket.on("message", message => {
       setNotifications([...notifications, message.authorId])
-      notify({ title: `Mensagem de ${message.authorUsername}`, body: message.content, tag: message.id, icon: "/logo.png", url: `/chat/${message.authorId}` })
+      // notify({ title: `Mensagem de ${message.authorUsername}`, body: message.content, tag: message.id, icon: "/logo.png", url: `/chat/${message.authorId}` })
       notificationSound.play()
     })
 
@@ -208,6 +212,23 @@ export default function Home({ loggedUser: _loggedUser, apiError }) {
     })
   }
 
+  async function subscribeUserNotifications() {
+    const registration = await navigator.serviceWorker.ready;
+    const subscription = await registration.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(settings.vapidKey)
+    });
+
+    await fetch(`${settings.apiURL}/notificationssubscribe`, {
+      method: 'POST',
+      body: JSON.stringify({ subscription }),
+      headers: {
+        "authorization": cookies.getCookie("authorization"),
+        "Content-Type": "application/json"
+      },
+    });
+  }
+
   return (
     <>
       <Head>
@@ -273,4 +294,19 @@ function notify({ title, body, tag, icon, url }) {
   } else if (Notification.permission === 'denied') {
     console.log('Usuário não deu permissão');
   }
+}
+
+function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding)
+    .replace(/\-/g, '+')
+    .replace(/_/g, '/');
+
+  const rawData = window.atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
 }
