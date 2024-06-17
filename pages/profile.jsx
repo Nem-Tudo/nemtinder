@@ -234,7 +234,7 @@ export default function Profile({ loggedUser: loggedUser_, apiError }) {
             applicationServerKey: urlBase64ToUint8Array(settings.vapidKey)
         });
 
-        await fetch(`${settings.apiURL}/notificationssubscribe`, {
+        const subscriptions = await fetch(`${settings.apiURL}/notificationssubscribe`, {
             method: 'POST',
             body: JSON.stringify({ subscription }),
             headers: {
@@ -242,6 +242,7 @@ export default function Profile({ loggedUser: loggedUser_, apiError }) {
                 "Content-Type": "application/json"
             },
         });
+        updateStateObject(setLoggedUser, loginUser, ["notificationsSubscriptionsCount", subscriptions.length])
     }
 
     return (
