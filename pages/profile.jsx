@@ -229,6 +229,7 @@ export default function Profile({ loggedUser: loggedUser_, apiError }) {
 
     async function subscribeUserNotifications() {
         if (window.localStorage.getItem("notificationSubscription")) return;
+        window.localStorage.setItem("notificationSubscription", `${Date.now()}`);
         const registration = await navigator.serviceWorker.ready;
         const subscription = await registration.pushManager.subscribe({
             userVisibleOnly: true,
@@ -243,8 +244,6 @@ export default function Profile({ loggedUser: loggedUser_, apiError }) {
                 "Content-Type": "application/json"
             },
         });
-
-        window.localStorage.setItem("notificationSubscription", subscription.endpoint);
     }
 
     return (
