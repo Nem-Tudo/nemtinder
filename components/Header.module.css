@@ -157,3 +157,13 @@
         display: none;
     }
 }
+
+
+@media (max-width: 577px) {
+    .header .avatardiv{
+        display: none !important;
+    }
+    .header .verified{
+        display: none !important;
+    }
+}

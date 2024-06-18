@@ -15,7 +15,7 @@ export default function Header({ data = {} }) {
 
     useEffect(() => {
         document.onkeydown = (e) => {
-            if(notifications && e.keyCode === 27){
+            if (notifications && e.keyCode === 27) {
                 setNotifications(null)
             }
         }
@@ -60,8 +60,14 @@ export default function Header({ data = {} }) {
                                 </div>
                             </Tippy>
                             <div className={styles.user}>
-                                <span>{data.user.name}</span>
-                                <Verified flags={data.user.flags} />
+                                <Tippy theme="nemtinder" content="Meu perfil">
+                                    <Link href={"/profile"}>
+                                        <span>{data.user.name}</span>
+                                    </Link>
+                                </Tippy>
+                                <div className={styles.verified}>
+                                    <Verified flags={data.user.flags} />
+                                </div>
                                 <Tippy theme="nemtinder" content="Meu perfil">
                                     <Link className={styles.avatardiv} href={"/profile"}>
                                         <img src={data.user.avatar} />
