@@ -355,7 +355,7 @@ export default function Profile({ loggedUser: loggedUser_, apiError }) {
                         <button disabled={false && !(user.username && user.name && user.age && user.gender && user.shortDescription && user.likesDescription && user.avatar && user.longDescription && user.preferredGenders && user.socialsDescription && user.photos[0])} onClick={() => saveChanges()}>Salvar</button>
                     </div>
 
-                    <UserSuggestion user={user} closeFunction={() => alert("Botão ilustrativo")} matchFunction={() => alert("Botão ilustrativo")} />
+                    <UserSuggestion loggedUser={loggedUser} user={user} closeFunction={() => alert("Botão ilustrativo")} matchFunction={() => alert("Botão ilustrativo")} />
                     <button onClick={() => {
                         cookies.eraseCookie("authorization")
                         location.href = "/login"

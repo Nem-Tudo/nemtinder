@@ -3,8 +3,11 @@ import styles from "./UserSuggestion.module.css";
 import Verified from "./Verified";
 import { FaHeart, FaHeartBroken, FaRegHeart } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
+import { MdOutlineMessage } from "react-icons/md";
+import Link from "next/link";
 
-export default function UserSuggestion({ user, matchFunction, closeFunction }) {
+
+export default function UserSuggestion({ user, matchFunction, closeFunction, loggedUser }) {
     return (
         <>
             <div className={styles.userSuggestion}>
@@ -32,6 +35,13 @@ export default function UserSuggestion({ user, matchFunction, closeFunction }) {
                                 <IoClose />
                             </div>
                         </Tippy>
+                        {
+                            loggedUser.matches.matchs.find(u => u.id === user.id) && <Tippy content="Mensagem" theme="nemtinder">
+                                <Link href={`/chat/${user.id}`} className={styles.option}>
+                                    <MdOutlineMessage />
+                                </Link>
+                            </Tippy>
+                        }
                         <Tippy content="Enviar match" theme="nemtinder">
                             <div onClick={() => matchFunction()} className={styles.option}>
                                 <FaRegHeart />

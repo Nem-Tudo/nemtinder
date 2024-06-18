@@ -248,7 +248,7 @@ export default function Home({ loggedUser: _loggedUser, apiError }) {
         <Sidebar loggedUser={loggedUser} setLoggedUser={setLoggedUser} notifications={notifications} />
         <section className={styles.content}>
           {
-            (feed.length > 0) ? <UserSuggestion closeFunction={() => {
+            (feed.length > 0) ? <UserSuggestion loggedUser={loggedUser} closeFunction={() => {
               const nextItem = showingFeedItem + 1;
               if (nextItem >= feed.length) return alert("Acabou os usuários :(\nChame mais amigos para termos mais gente!");
               jumpUser(feed[showingFeedItem]?.id);
