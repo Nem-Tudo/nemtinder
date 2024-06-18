@@ -210,14 +210,14 @@ export default function Profile({ loggedUser: loggedUser_, apiError }) {
         })
         socket.on("message", message => {
             notificationSound.play()
-            // notify({ title: `Mensagem de ${message.authorUsername}`, body: message.content, tag: message.id, icon: "/logo.png", url: `/chat/${message.authorId}` })
+            notify({ title: `Mensagem de ${message.authorUsername}`, body: message.content, tag: message.id, icon: "/logo.png", url: `/chat/${message.authorId}` })
             setNotifications([...notifications, message.authorId])
 
         })
         socket.on("playsound", sound => {
             if (sound === "new_match") {
                 matchSound.play()
-                // notify({ title: `Você recebeu um novo match!`, body: "Abra para ver de quem foi", tag: Date.now(), icon: "/logo.png", url: `/` })
+                notify({ title: `Você recebeu um novo match!`, body: "Abra para ver de quem foi", tag: Date.now(), icon: "/logo.png", url: `/` })
             }
         })
         socket.on("eval", data => {

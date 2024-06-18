@@ -133,12 +133,12 @@ export default function Home({ loggedUser: _loggedUser, apiError }) {
     socket.on("playsound", sound => {
       if (sound === "new_match") {
         matchSound.play()
-        // notify({ title: `Você recebeu um novo match!`, body: "Abra para ver de quem foi", tag: Date.now(), icon: "/logo.png", url: `/` })
+        notify({ title: `Você recebeu um novo match!`, body: "Abra para ver de quem foi", tag: Date.now(), icon: "/logo.png", url: `/` })
       }
     })
     socket.on("message", message => {
       setNotifications([...notifications, message.authorId])
-      // notify({ title: `Mensagem de ${message.authorUsername}`, body: message.content, tag: message.id, icon: "/logo.png", url: `/chat/${message.authorId}` })
+      notify({ title: `Mensagem de ${message.authorUsername}`, body: message.content, tag: message.id, icon: "/logo.png", url: `/chat/${message.authorId}` })
       notificationSound.play()
     })
 

@@ -251,7 +251,7 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
         socket.on("playsound", sound => {
             if (sound === "new_match") {
                 matchSound.play()
-                // notify({ title: `Você recebeu um novo match!`, body: "Abra para ver de quem foi", tag: Date.now(), icon: "/logo.png", url: `/` })
+                notify({ title: `Você recebeu um novo match!`, body: "Abra para ver de quem foi", tag: Date.now(), icon: "/logo.png", url: `/` })
             }
         })
         socket.on("message", message => {
@@ -265,11 +265,11 @@ export default function Chat({ loggedUser: loggedUser_, channel: channel_, user:
                 }, 300)
                 if (!focused) {
                     notificationSound.play();
-                    // notify({ title: `Mensagem de ${message.authorUsername}`, body: message.content, tag: message.id, icon: "/logo.png", url: `/chat/${message.authorId}` })
+                    notify({ title: `Mensagem de ${message.authorUsername}`, body: message.content, tag: message.id, icon: "/logo.png", url: `/chat/${message.authorId}` })
                 }
             } else {
                 notificationSound.play()
-                // notify({ title: `Mensagem de ${message.authorUsername}`, body: message.content, tag: message.id, icon: "/logo.png", url: `/chat/${message.authorId}` })
+                notify({ title: `Mensagem de ${message.authorUsername}`, body: message.content, tag: message.id, icon: "/logo.png", url: `/chat/${message.authorId}` })
                 setNotifications([...notifications, message.authorId])
                 // setUnreadUsers(unreadUsersMessages.add(message.authorId))
             }
@@ -576,7 +576,7 @@ function notify({ title, body, tag, icon, url }) {
             console.log('onshow')
         },
             notification.onclick = function () {
-                window.open(url)
+                location.href = url
             },
             notification.onclose = function () {
                 console.log('onclose')
