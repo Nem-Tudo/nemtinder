@@ -182,19 +182,18 @@ export default function Login({ apiError }) {
                         />
                     </div>
                     <button onClick={() => {
-                        if (!window.Notification) {
+                        if (window.Notification) {
+                            if (Notification.permission === 'default') {
+                                Notification.requestPermission(function () {
+                                    console.log('not request');
+                                }).then(permission => {
+                                    if (permission === "granted") {
+                                        subscribeUserNotifications()
+                                    }
+                                })
+                            }
+                        } else {
                             console.log('Este browser não suporta Web Notifications!');
-                            return;
-                        }
-
-                        if (Notification.permission === 'default') {
-                            Notification.requestPermission(function () {
-                                console.log('not request');
-                            }).then(permission => {
-                                if (permission === "granted") {
-                                    subscribeUserNotifications()
-                                }
-                            })
                         }
                         login()
                     }} disabled={!recaptcha1Value}>Logar</button>
@@ -213,19 +212,18 @@ export default function Login({ apiError }) {
                         />
                     </div>
                     <button disabled={!recaptcha2Value} onClick={() => {
-                        if (!window.Notification) {
+                        if (window.Notification) {
+                            if (Notification.permission === 'default') {
+                                Notification.requestPermission(function () {
+                                    console.log('not request');
+                                }).then(permission => {
+                                    if (permission === "granted") {
+                                        subscribeUserNotifications()
+                                    }
+                                })
+                            }
+                        } else {
                             console.log('Este browser não suporta Web Notifications!');
-                            return;
-                        }
-
-                        if (Notification.permission === 'default') {
-                            Notification.requestPermission(function () {
-                                console.log('not request');
-                            }).then(permission => {
-                                if (permission === "granted") {
-                                    subscribeUserNotifications()
-                                }
-                            })
                         }
                         register()
                     }}>Registrar</button>
