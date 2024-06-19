@@ -353,6 +353,7 @@ export default function Profile({ loggedUser: loggedUser_, apiError }) {
                             <span>Foto</span>
                         </div>
                         <button disabled={false && !(user.username && user.name && user.age && user.gender && user.shortDescription && user.likesDescription && user.avatar && user.longDescription && user.preferredGenders && user.socialsDescription && user.photos[0])} onClick={() => saveChanges()}>Salvar</button>
+                        <span>Visualizações no perfil: {loggedUser.profile_views}</span>
                     </div>
 
                     <UserSuggestion loggedUser={loggedUser} user={user} closeFunction={() => alert("Botão ilustrativo")} matchFunction={() => alert("Botão ilustrativo")} />
