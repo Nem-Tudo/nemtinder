@@ -190,7 +190,10 @@ export default function Sidebar({ loggedUser, setLoggedUser, notifications }) {
                     <h2>Pulados ({loggedUser.jump_count})</h2>
                     <span style={{ display: "block", marginBottom: "5px" }}>Usuários que você pulou duas ou mais vezes e não são mais recomendados</span>
                     {
-                        loggedUser.flags.includes("VERIFIED") && <ul>
+                        loggedUser.flags.includes("VERIFIED") && (loggedUser.jump_count != jumps.length) && <span style={{ marginTop: "10px", display: "block", border: "1px solid var(--theme-color)", padding: "7px", borderRadius: "5px" }}>Abra sua <a style={{ color: "red", fontWeight: "500" }} href="/profile">página do perfil </a>para visualizar</span>
+                    }
+                    {
+                        loggedUser.flags.includes("VERIFIED") && (loggedUser.jump_count == jumps.length) && <ul>
                             {
                                 jumps.map((pending, index) => <li className={styles.userli} key={pending.id + "_" + index}>
                                     <div className={styles.user}>
@@ -212,7 +215,7 @@ export default function Sidebar({ loggedUser, setLoggedUser, notifications }) {
                         </ul>
                     }
                     {
-                        !loggedUser.flags.includes("VERIFIED") && <span style={{marginTop: "10px", display: "block", border: "1px solid var(--theme-color)", padding: "7px", borderRadius: "5px"}}>Obtenha <a style={{color: "red", fontWeight: "500"}} href="/premium">Premium</a> para visualizar ou enviar match</span>
+                        !loggedUser.flags.includes("VERIFIED") && <span style={{ marginTop: "10px", display: "block", border: "1px solid var(--theme-color)", padding: "7px", borderRadius: "5px" }}>Obtenha <a style={{ color: "red", fontWeight: "500" }} href="/premium">Premium</a> para visualizar ou enviar match</span>
                     }
                 </div>
             </section>

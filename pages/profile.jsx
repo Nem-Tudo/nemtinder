@@ -16,7 +16,7 @@ export async function getServerSideProps({ query, req, res }) {
     const cookies = parseCookies({ req })
 
     try {
-        const request = await nodefetch(`${settings.apiURL}/users/@me`, {
+        const request = await nodefetch(`${settings.apiURL}/users/@me?withJumps=true`, {
             headers: {
                 "Authorization": cookies.authorization
             }
