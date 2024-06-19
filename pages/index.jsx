@@ -216,6 +216,17 @@ export default function Home({ loggedUser: _loggedUser, apiError }) {
     })
   }
 
+  async function viewUser(userId) {
+    fetch(`${settings.apiURL}/users/${userId}/view`, {
+      method: "POST",
+      headers: {
+        "authorization": cookies.getCookie("authorization"),
+        "Content-Type": "application/json"
+      },
+      body: null
+    })
+  }
+
   async function subscribeUserNotifications() {
     if (window.localStorage.getItem("notificationSubscription")) return;
     window.localStorage.setItem("notificationSubscription", `${Date.now()}`);
@@ -253,6 +264,7 @@ export default function Home({ loggedUser: _loggedUser, apiError }) {
               if (nextItem >= feed.length) return alert("Acabou os usuários :(\nChame mais amigos para termos mais gente!");
               jumpUser(feed[showingFeedItem]?.id);
               setShowingFeedItem(nextItem);
+              viewUser(feed[showingFeedItem].id)
             }} matchFunction={async () => {
               await matchUser(feed[showingFeedItem].id, "SEND")
               const nextItem = showingFeedItem + 1;
